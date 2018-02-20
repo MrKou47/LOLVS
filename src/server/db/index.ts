@@ -1,1 +1,5 @@
-export { default as initialDB } from './utils/initialDB';
+import mongoose from 'mongoose';
+
+const db = mongoose.createConnection('mongodb://localhost/test');
+
+export default db;

@@ -1,7 +1,6 @@
 import http from 'http';
 import rp from 'request-promise';
-import mongoose from 'mongoose';
-
+import db from '../index';
 interface IgetSubmitVideos {
   status: boolean;
   data: string & {
@@ -11,8 +10,6 @@ interface IgetSubmitVideos {
     pages: number;
   };
 }
-
-const db = mongoose.createConnection('mongodb://localhost/test');
 
 db.on('error', console.error.bind(console, '连接错误:'));
 
