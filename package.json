@@ -1,0 +1,20 @@
+{
+  "name": "LOLVS",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/MrKou47/LOLVS.git",
+  "author": "Mrkou47 <koubodehao@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/mongoose": "^5.0.2",
+    "@types/node": "^9.4.6",
+    "@types/request": "^2.47.0",
+    "@types/request-promise": "^4.1.41",
+    "mongoose": "^5.0.6",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "ts-node": "^5.0.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
+  }
+}

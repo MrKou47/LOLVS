@@ -1,0 +1,1 @@
+export { default as initialDB } from './utils/initialDB';
