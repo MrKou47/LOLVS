@@ -1,6 +1,9 @@
-import http from 'http';
+
 import rp from 'request-promise';
-import db from '../index';
+import db from './index';
+import { VideoSchema } from './schema/video-schema';
+import { SPACE_URL, API_URL } from '../config';
+
 interface IgetSubmitVideos {
   status: boolean;
   data: string & {
@@ -11,23 +14,17 @@ interface IgetSubmitVideos {
   };
 }
 
-db.on('error', console.error.bind(console, '连接错误:'));
-
-const handleServe = (req: http.ServerRequest, res: http.ServerResponse) => {
-  res.end('nnn');
-}
-
 const receiveAllVideos = async () => {
   let videoList: any[] = [];
   let page = 1;
 
-  const rr = ({ pagesize = 100, page = 1, keyword: string = '', order = '', mid = 95295911 }) => rp(
-    `https://space.bilibili.com/ajax/member/getSubmitVideos?mid=${mid}&pagesize=${pagesize}&page=${page}&keyword=&order=pubdate`,
+  const getVideos = ({ pagesize = 100, page = 1, keyword: string = '', order = '', mid = 95295911 }) => rp(
+    `${SPACE_URL}/ajax/member/getSubmitVideos?mid=${mid}&pagesize=${pagesize}&page=${page}&keyword=&order=pubdate`,
     { json: true }
   );
 
   async function receive(page: number) {
-    const result: IgetSubmitVideos = await rr({ page });
+    const result: IgetSubmitVideos = await getVideos({ page });
     if (!result.status) throw new Error(result.data);
     videoList = videoList.concat(result.data.vlist);
     if (page < result.data.pages) {
@@ -46,7 +43,7 @@ const addPage2Video = async () => {
   const allVideos = await receiveAllVideos();
 
   const receiveParts = (aid: number) => rp(
-    `https://api.bilibili.com/x/player/pagelist?aid=${aid}&jsonp=jsonp`,
+    `${API_URL}/x/player/pagelist?aid=${aid}&jsonp=jsonp`,
     { json: true }
   );
 
@@ -60,26 +57,7 @@ function initialDB() {
   db.once('open', async function () {
     const finalVideoList = await addPage2Video();
     console.log(finalVideoList);
-    var VideoSchema = new mongoose.Schema({
-      aid: Number,
-      author: String,
-      comment: Number,
-      copyright: String,
-      created: Number,
-      description: String,
-      favorites: Number,
-      hide_click: Boolean,
-      length: String,
-      mid: Number,
-      pagelist: [],
-      pic: String,
-      play: String,
-      review: Number,
-      subtitle: String,
-      title: String,
-      typeid: Number,
-      video_review: Number,
-    });
+
     const VideoModel = db.model('Video', VideoSchema);
     finalVideoList.forEach(v => {
       var videoEntity: any = new VideoModel(v);
