@@ -1,17 +1,17 @@
-import db from './index';
+import db from '../../db';
 import rp from 'request-promise';
-import { SEARCH_URL } from '../config';
+import { SEARCH_URL } from '../../config';
 
 const videoCollection = db.collection('videos');
 
 interface IcrawlVideos {
-  aid: number,
+  aid: number;
   keywords: string;
 }
 
 const crawlVideos = async (options: IcrawlVideos) => {
   let videoResult;
-  const existVideo = await videoCollection.find({ aid: options.aid }).count();
+  const existVideo = await videoCollection.aggregate([{}]);
   if (existVideo) return 'video exist';
   try {
     videoResult = await rp(
@@ -27,4 +27,4 @@ const crawlVideos = async (options: IcrawlVideos) => {
     return 'search error';
   }
   return videoResult;
-}
+};

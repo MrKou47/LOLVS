@@ -16,11 +16,11 @@ interface IgetSubmitVideos {
 
 const receiveAllVideos = async () => {
   let videoList: any[] = [];
-  let page = 1;
+  let pageNum = 1;
 
-  const getVideos = ({ pagesize = 100, page = 1, keyword: string = '', order = '', mid = 95295911 }) => rp(
+  const getVideos = ({ pagesize = 100, page = 1, keyword = '', order = '', mid = 95295911 }) => rp(
     `${SPACE_URL}/ajax/member/getSubmitVideos?mid=${mid}&pagesize=${pagesize}&page=${page}&keyword=&order=pubdate`,
-    { json: true }
+    { json: true },
   );
 
   async function receive(page: number) {
@@ -28,41 +28,41 @@ const receiveAllVideos = async () => {
     if (!result.status) throw new Error(result.data);
     videoList = videoList.concat(result.data.vlist);
     if (page < result.data.pages) {
-      page++;
+      pageNum++;
       videoList = videoList.concat(await receive(page));
     } else {
       return result.data.vlist;
     }
   }
 
-  await receive(page);
+  await receive(pageNum);
   return videoList;
-}
+};
 
 const addPage2Video = async () => {
   const allVideos = await receiveAllVideos();
 
   const receiveParts = (aid: number) => rp(
     `${API_URL}/x/player/pagelist?aid=${aid}&jsonp=jsonp`,
-    { json: true }
+    { json: true },
   );
 
-  return Promise.all(allVideos.map(async function (v) {
+  return Promise.all(allVideos.map(async (v) => {
     const videoParts = await receiveParts(v.aid);
     return { ...v, pagelist: videoParts.data };
   }));
-}
+};
 
 function initialDB() {
-  db.once('open', async function () {
+  db.once('open', async () => {
     const finalVideoList = await addPage2Video();
     console.log(finalVideoList);
 
     const VideoModel = db.model('Video', VideoSchema);
-    finalVideoList.forEach(v => {
-      var videoEntity: any = new VideoModel(v);
+    finalVideoList.forEach((v) => {
+      const videoEntity: any = new VideoModel(v);
       videoEntity.save();
-    })
+    });
   });
 }
 
