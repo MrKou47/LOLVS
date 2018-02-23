@@ -1,34 +1,31 @@
 import { Router } from 'express';
-import db, { videos } from '../../db';
+import { VideoModels } from '../../db';
 
 import genMsg from '../utils/gen-msg';
 
-const api = Router();
+import { ISearchVideoReq, ISearchVideoRes } from 'interface/api/videos';
 
-interface ISearchVideoResp {
-  videos: any[];
-}
+const videosApi = Router();
 
 /**
  * 指定搜索
  * aid
  * keywords: 关键词
  */
-api.get('/search', async (req, res, next) => {
-  const { query } = req;
-  const { aid, keywords } = query;
-  let result = {};
-  if (!Object.keys(query).length) return res.send(genMsg({ msg: '需要搜索条件' }));
+videosApi.get('/search', async (req, res, next) => {
+  const { aid, keyword } = req.query as ISearchVideoReq;
+  let result;
+  if (!aid && !keyword) return res.send(genMsg({ msg: '需要搜索条件' }));
   if (aid) {
-    result = await videos.find({ aid: +aid }).toArray();
+    result = await VideoModels.find({ aid: +aid }).exec();
   }
-  if (keywords) {
-    result = await videos.find({ 'pagelist.part': { $regex: new RegExp(query.keywords)}}).toArray();
+  if (keyword) {
+    result = await VideoModels.find({ 'pagelist.part': { $regex: new RegExp(keyword)}}).exec();
   }
 
   res.send(
-    genMsg<ISearchVideoResp>({ data: { videos: result } })
+    genMsg<ISearchVideoRes>({ data: { videos: result } })
   );
 });
 
-export default api;
+export default videosApi;

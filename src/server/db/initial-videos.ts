@@ -56,6 +56,7 @@ const addPage2Video = async () => {
 function initialDB() {
   db.once('open', async () => {
     const finalVideoList = await addPage2Video();
+    // tslint:disable-next-line:no-console
     console.log(finalVideoList);
 
     const VideoModel = db.model('Video', VideoSchema);

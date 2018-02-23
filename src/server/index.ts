@@ -3,8 +3,6 @@ import * as bodyParser from 'body-parser';
 
 import { v1Router } from './api';
 
-// import initialDB from './db/utils/initialDB';
-
 const app = express();
 
 app.set('json spaces', 2);
@@ -22,5 +20,3 @@ app.listen(8388, () => {
   // tslint:disable-next-line:no-console
   console.log('server start on port 8388');
 });
-
-// initialDB();

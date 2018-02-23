@@ -1,20 +1,19 @@
 import { Router } from 'express';
-import db from '../db';
+import { HeroesModels, VideoModels } from '../db';
 
 import videosApi from './videos';
+import heroesApi from './heroes';
 
 const v1Router = Router();
 
 v1Router.use('/v1/test', async (req, res, next) => {
-  const videos = db.collection('videos');
-  const searchRes = await videos.aggregate([
+  const searchRes = await VideoModels.aggregate([
     { $match: { aid: +req.query.aid }},
-  ]).toArray();
+  ]).exec();
   res.send(searchRes);
 });
 
 v1Router.use('/v1/video', videosApi);
-
-// v1Router.use('/v1/crawl', searchApi);
+v1Router.use('/v1/hero', heroesApi);
 
 export { v1Router };

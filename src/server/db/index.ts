@@ -1,9 +1,15 @@
 import * as mongoose from 'mongoose';
+import { VideoSchema } from './schema/video-schema';
+import { HeroSchema } from './schema/heroes-schema';
 
-const db = mongoose.createConnection('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/test');
+const db = mongoose.connection;
 
 export const videos = db.collection('videos');
-export const heros = db.collection('heros');
+export const heroes = db.collection('heroes');
+
+export const VideoModels = mongoose.model('videos', VideoSchema);
+export const HeroesModels = mongoose.model('heroes', HeroSchema);
 
 db.on('error', console.error.bind(console, '连接错误:'));
 

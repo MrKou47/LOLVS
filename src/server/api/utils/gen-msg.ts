@@ -1,6 +1,6 @@
 interface IgenMsgOptions<T extends any> {
   status?: number;
-  data?: T | any;
+  data?: T;
   msg?: string;
 }
 
@@ -10,7 +10,7 @@ interface IgenMsgResult<T> {
   msg?: string;
 }
 
-const getMsg = <T>(options: IgenMsgOptions<T> = { status: 1, msg: '', data: {} }): IgenMsgResult<T> => {
+const getMsg = <T>(options: IgenMsgOptions<T> = { status: 1, msg: '' }): IgenMsgResult<T> => {
   if (options.status === -1) {
     options.msg = options.msg || 'UNKNOWN ERROR';
   }

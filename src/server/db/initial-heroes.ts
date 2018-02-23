@@ -1,14 +1,14 @@
-import db from './index';
+import db, { HeroesModels } from './index';
 import * as cheerio from 'cheerio';
 import * as rp from 'request-promise';
 
-interface IHeros {
+interface IHeroes {
   _id: number;
   name: string;
   shortcuts: string[];
 }
 
-const crawlHeros = async () => {
+const crawlHeroes = async () => {
   const html = await rp('http://lol.replays.net/gl/page/20110127/1543859.html');
   const $ = cheerio.load(html);
   const tbodyDOM = $('#text').find('table');
@@ -19,7 +19,8 @@ const crawlHeros = async () => {
       const name = nameDOM.text().split(/,|，/)[0];
       const shortcuts = shortcutDOM.text().split(/,|，/);
       try {
-        await db.collection('heros').insert({ name, shortcuts });
+        const hero = new HeroesModels({ name, shortcuts });
+        await hero.save();
       } catch (error) {
         // tslint:disable-next-line:no-console
         console.log(`save name: ${name} broken!`);
@@ -31,4 +32,4 @@ const crawlHeros = async () => {
   console.log('initial hero database success!');
 };
 
-crawlHeros();
+crawlHeroes();
