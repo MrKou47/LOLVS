@@ -23,8 +23,16 @@ const config = {
   module: {
     rules: [
       {
-        test: /tsx?/,
+        test: /\.jsx$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader'
+      },
+      {
+        test: /\.tsx?/,
         use: [
+          {
+            loader: 'babel-loader'
+          },
           {
             loader: 'ts-loader'
           }
@@ -69,9 +77,15 @@ const config = {
     ]
   },
   devServer: {
-    port: 8388,
+    port: 8389,
     // hot: true,
     historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: "http://localhost:8388",
+        secure: false,
+      }
+    }
   },
   cache: false,
   plugins: [

@@ -1,14 +1,31 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+
+import SearchBar from '../../components/searchbar';
+import VideoCard from '../../components/videocard';
 
 import styles from './index.scss';
 
-import SearchBar from '../../components/searchbar';
+import { IHybirdProps } from 'interface/client/index';
 
-export interface AppProps {
-}
+import { TOGGLE_SEARCH } from './action';
+import { IHomeState } from './reducer';
 
-class Home extends React.Component<AppProps, any> {
+class Home extends React.Component<IHybirdProps<IHomeState>, any> {
+
+  toogleSearching = () => {
+    this.props.dispatch({
+      type: TOGGLE_SEARCH
+    });
+    setTimeout(() => {
+      this.props.dispatch({
+        type: TOGGLE_SEARCH
+      });
+    }, 3000);
+  }
+
   render() {
+    const { searching } = this.props;
     console.log(styles);
     return (
       <div className={styles['page']}>
@@ -19,10 +36,18 @@ class Home extends React.Component<AppProps, any> {
           </div>
           <p className={styles['logo-text']}>LOLVS</p>
         </div>
-        <SearchBar />
+        <SearchBar searching={searching} toggleSearching={this.toogleSearching} />
+        <div className={styles['video-list']} >
+          <VideoCard key={1} />
+          <VideoCard key={2} />
+        </div>
       </div>
     );
   }
 }
 
-export default Home;
+const mapState2Props = store => {
+  return {...store.home};
+};
+
+export default connect(mapState2Props)(Home);

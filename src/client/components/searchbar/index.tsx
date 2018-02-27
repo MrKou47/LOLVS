@@ -1,16 +1,26 @@
 import * as React from 'react';
 
-// import styles from './ss.scss';
-const s = require('./ss.css');
+import styles from './index.scss';
 
-export interface AppProps {
+export interface SearchBarProps {
+  searching: boolean;
+  toggleSearching: () => any;
 }
 
-export default class App extends React.Component<AppProps, any> {
+class SearchBar extends React.Component<SearchBarProps, any> {
   render() {
+    const { searching, toggleSearching } = this.props;
     return (
-      <div className={s['haha']} >as
+      <div className={styles["wrapper"]}>
+        <div className={styles["search-bar"]}>
+          <input type="text" className="text" />
+          <button
+            className={`${styles["search-btn"]} ${searching ? styles['loading'] : ''}`}
+            onClick={() => toggleSearching()}>搜索</button>
+        </div>
       </div>
     );
   }
 }
+
+export default SearchBar;

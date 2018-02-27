@@ -14,7 +14,7 @@
     margin-left: .1rem;
     max-width: 0;
     color: #ffc600;
-    animation: showLogoTxt 2s cubic-bezier(0.43, 0.4, 0.04, 1.04) 3s;
+    animation: showLogoTxt 1.4s cubic-bezier(0.43, 0.4, 0.04, 1.04) 2s;
     animation-fill-mode: forwards;
     overflow: hidden;
   }
@@ -52,7 +52,6 @@
     }
   }
   .line-2 {
-    // left: 30px;
     margin-left: .15rem;
     overflow: hidden;
     &::after {
@@ -154,4 +153,8 @@
     font-size: .12rem;
     background-color: #b8b8c3;
   }
+}
+
+.video-list {
+  margin-top: .2rem;
 }
