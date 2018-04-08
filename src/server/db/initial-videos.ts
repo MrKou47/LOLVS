@@ -1,5 +1,5 @@
 
-import rp from 'request-promise';
+import * as rp from 'request-promise';
 import db from './index';
 import { VideoSchema } from './schema/video-schema';
 import { SPACE_URL, API_URL } from '../config';
@@ -18,42 +18,44 @@ const receiveAllVideos = async () => {
   let videoList: any[] = [];
   let pageNum = 1;
 
-  const getVideos = ({ pagesize = 100, page = 1, keyword = '', order = '', mid = 95295911 }) => rp(
-    `${SPACE_URL}/ajax/member/getSubmitVideos?mid=${mid}&pagesize=${pagesize}&page=${page}&keyword=&order=pubdate`,
+  const getVideos = ({ pagesize = 100, page = 1, keyword = '', order = 'pubdate', mid = 95295911 }) => rp(
+    `${SPACE_URL}/ajax/member/getSubmitVideos?mid=${mid}&pagesize=${pagesize}&page=${page}&keyword=${keyword}&order=${order}`,
     { json: true },
   );
 
   async function receive(page: number) {
     const result: IgetSubmitVideos = await getVideos({ page });
+    console.log(`finish get page ${page} videos`);
     if (!result.status) throw new Error(result.data);
-    videoList = videoList.concat(result.data.vlist);
     if (page < result.data.pages) {
+      videoList = videoList.concat(result.data.vlist);
       pageNum++;
-      videoList = videoList.concat(await receive(page));
+      return await receive(pageNum);
     } else {
-      return result.data.vlist;
+      return videoList = videoList.concat(result.data.vlist);
     }
   }
-
+  console.log(`start to get videos...`);
   await receive(pageNum);
+  console.log(`finish get all videos.`);
   return videoList;
 };
 
 const addPage2Video = async () => {
   const allVideos = await receiveAllVideos();
-
   const receiveParts = (aid: number) => rp(
     `${API_URL}/x/player/pagelist?aid=${aid}&jsonp=jsonp`,
     { json: true },
   );
-
-  return Promise.all(allVideos.map(async (v) => {
+  return Promise.all(allVideos.map(async v => {
     const videoParts = await receiveParts(v.aid);
+    var tt = videoParts;
     return { ...v, pagelist: videoParts.data };
   }));
 };
 
 function initialDB() {
+  console.log('start initial videos');
   db.once('open', async () => {
     const finalVideoList = await addPage2Video();
     // tslint:disable-next-line:no-console
@@ -64,7 +66,11 @@ function initialDB() {
       const videoEntity: any = new VideoModel(v);
       videoEntity.save();
     });
+
+    console.log('initial videos database success!');
   });
 }
+
+initialDB();
 
 export default initialDB;
