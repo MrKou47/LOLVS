@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "server": "node -r ts-node/register ./src/server/index.ts",
-    "initialv": "node -r ts-node/register ./src/server/db/initial-heroes.ts",
-    "initialh": "node -r ts-node/register ./src/server/db/initial-videos.ts",
+    "initialv": "node -r ts-node/register ./src/server/db/initial-videos.ts",
+    "initialh": "node -r ts-node/register ./src/server/db/initial-heroes.ts",
     "client": "npm run dev",
     "dev": "webpack-dev-server --config webpack/webpack.dev.js --profile --debug --progress",
     "bundle": "webpack --config webpack/webpack.dev.js --profile"
@@ -48,6 +48,7 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "request-promise": "^4.2.2",
     "reqwest": "^2.0.5",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.2",

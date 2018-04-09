@@ -13,7 +13,7 @@ export function updateVideoList(payload) {
 export function getVideoList () {
   return (dispatch, getState) => {
     searchVideo({ keyword: '诺手' }).then(res => {
-      dispatch(updateVideoList(res));
+      dispatch(updateVideoList(res.data));
     });
   }
 }

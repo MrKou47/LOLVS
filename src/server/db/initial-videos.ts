@@ -43,13 +43,13 @@ const receiveAllVideos = async () => {
 
 const addPage2Video = async () => {
   const allVideos = await receiveAllVideos();
+  console.log('start to get sub video');
   const receiveParts = (aid: number) => rp(
     `${API_URL}/x/player/pagelist?aid=${aid}&jsonp=jsonp`,
     { json: true },
   );
   return Promise.all(allVideos.map(async v => {
     const videoParts = await receiveParts(v.aid);
-    var tt = videoParts;
     return { ...v, pic: `https:${v.pic}`, pagelist: videoParts.data };
   }));
 };
@@ -58,9 +58,7 @@ function initialDB() {
   console.log('start initial videos');
   db.once('open', async () => {
     const finalVideoList = await addPage2Video();
-    // tslint:disable-next-line:no-console
-    console.log(finalVideoList);
-
+    console.log('finish get videos and sub videos.');
     const VideoModel = db.model('Video', VideoSchema);
     finalVideoList.forEach((v) => {
       const videoEntity: any = new VideoModel(v);

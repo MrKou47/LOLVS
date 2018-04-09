@@ -29,7 +29,8 @@ class Home extends React.Component<IHybirdProps<IHomeState>, any> {
   }
 
   render() {
-    const { searching } = this.props;
+    const { searching, videos } = this.props;
+    const videosDOM = videos.map((v, idx) => <VideoCard {...v} key={idx} />)
     console.log(styles);
     return (
       <div className={styles['page']}>
@@ -41,10 +42,7 @@ class Home extends React.Component<IHybirdProps<IHomeState>, any> {
           <p className={styles['logo-text']}>LOLVS</p>
         </div>
         <SearchBar searching={searching} toggleSearching={this.toogleSearching} />
-        <div className={styles['video-list']} >
-          <VideoCard key={1} />
-          <VideoCard key={2} />
-        </div>
+        <div className={styles['video-list']}>{videosDOM}</div>
       </div>
     );
   }

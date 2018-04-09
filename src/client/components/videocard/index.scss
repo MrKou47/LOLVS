@@ -22,12 +22,9 @@
       bottom: 0;
       font-size: .18rem;
       font-weight: normal;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       padding: .1rem .2rem;
       margin: 0;
       box-sizing: border-box;
-      overflow: hidden;
       color: #fff;
     }
     &::before {
@@ -55,6 +52,13 @@
       border-bottom: 1px solid #e2e2e2;
       align-items: center;
       justify-content: space-between;
+      .sub-video-title {
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
       .play {
         display: flex;
         align-items: center;
@@ -76,6 +80,9 @@
     right: 0;
     font-size: .12rem;
     color: #666;
+    .show-more-btn {
+      transform: rotate(180deg);
+    }
     img {
       width: .14rem;
     }
