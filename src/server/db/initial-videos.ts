@@ -50,7 +50,7 @@ const addPage2Video = async () => {
   return Promise.all(allVideos.map(async v => {
     const videoParts = await receiveParts(v.aid);
     var tt = videoParts;
-    return { ...v, pagelist: videoParts.data };
+    return { ...v, pic: `https:${v.pic}`, pagelist: videoParts.data };
   }));
 };
 

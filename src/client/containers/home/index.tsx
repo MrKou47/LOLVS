@@ -8,10 +8,14 @@ import styles from './index.scss';
 
 import { IHybirdProps } from 'interface/client/index';
 
-import { TOGGLE_SEARCH } from './action';
+import { TOGGLE_SEARCH, getVideoList } from './action';
 import { IHomeState } from './reducer';
 
 class Home extends React.Component<IHybirdProps<IHomeState>, any> {
+
+  componentDidMount() {
+    this.props.dispatch(getVideoList());
+  }
 
   toogleSearching = () => {
     this.props.dispatch({

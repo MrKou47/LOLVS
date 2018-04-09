@@ -34,7 +34,12 @@ const config = {
             loader: 'babel-loader'
           },
           {
-            loader: 'ts-loader'
+            loader: 'ts-loader',
+            options: {
+              compilerOptions: {
+                module: "es2015"
+              }
+            }
           }
         ],
         exclude: /node_modules/,

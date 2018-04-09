@@ -6,7 +6,11 @@
   "author": "Mrkou47 <koubodehao@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --config webpack/webpack.dev.js --profile --info=true",
+    "server": "node -r ts-node/register ./src/server/index.ts",
+    "initialv": "node -r ts-node/register ./src/server/db/initial-heroes.ts",
+    "initialh": "node -r ts-node/register ./src/server/db/initial-videos.ts",
+    "client": "npm run dev",
+    "dev": "webpack-dev-server --config webpack/webpack.dev.js --profile --debug --progress",
     "bundle": "webpack --config webpack/webpack.dev.js --profile"
   },
   "dependencies": {
@@ -21,6 +25,7 @@
     "@types/redux": "^3.6.0",
     "@types/request": "^2.47.0",
     "@types/request-promise": "^4.1.41",
+    "@types/reqwest": "git+https://git@github.com/nozzlegear/reqwest.d.ts.git",
     "@types/webpack-env": "^1.13.5",
     "awesome-typescript-loader": "^3.5.0",
     "babel-core": "^6.26.0",
@@ -43,8 +48,7 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "request": "^2.83.0",
-    "request-promise": "^4.2.2",
+    "reqwest": "^2.0.5",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.2",
     "ts-loader": "3.5.0",
